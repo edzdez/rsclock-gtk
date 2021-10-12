@@ -11,12 +11,7 @@ fn get_current_date() -> String {
     return format!("{}", Local::now().format("%Y/%m/%d"));
 }
 
-fn main() {
-    let app = Application::builder()
-        .application_id("com.edzdez.gtkclock")
-        .build();
-
-    app.connect_activate(|app| {
+fn build_ui(app: &Application) {
         let win = ApplicationWindow::builder()
             .application(app)
             .default_width(800)
@@ -62,7 +57,14 @@ fn main() {
         };
 
         glib::timeout_add_seconds_local(1, tick);
-    });
+}
+
+fn main() {
+    let app = Application::builder()
+        .application_id("com.edzdez.gtkclock")
+        .build();
+
+    app.connect_activate(build_ui);
 
     app.run();
 }
