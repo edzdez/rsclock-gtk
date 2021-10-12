@@ -4,5 +4,5 @@ Inspired by https://github.com/valebes/rsClock
 
 ## To-Do
 * [x] Basic clock functionality
-* [ ] Styling (text size, colors, etc)
-* [ ] Config file
+* [x] Change font size from default
+* [ ] Dynamically scale the font on window resize
