@@ -1,7 +1,8 @@
 use gtk::prelude::*;
-use chrono::Local;
-use gtk::{Application, ApplicationWindow, Label, Justification, BaselinePosition, Orientation, Box, DrawingArea};
+use gtk::{Application, ApplicationWindow, Label, Justification, BaselinePosition, Orientation, Box};
 use gtk::glib;
+use gtk::pango;
+use chrono::Local;
 
 fn get_current_time() -> String {
     return format!("{}", Local::now().format("%H:%M:%S"));
@@ -33,11 +34,30 @@ fn build_ui(app: &Application) {
             .baseline_position(BaselinePosition::Center)
             .build();
 
-        // TODO: use cairo to make the text for date and time scale with the window
         let date_time_box = Box::builder()
             .orientation(Orientation::Vertical)
             .baseline_position(BaselinePosition::Center)
             .build();
+
+        // TODO: find out how to change the scale dynamically
+        // maybe use gdk::EventConfigure and pango::AttrList::change
+        let time_attr_list = pango::AttrList::new();
+        let mut attr = pango::Attribute::new_scale(10.);
+        attr.set_start_index(0);
+        time_attr_list.insert(attr);
+        use pango::Weight;
+        let mut attr = pango::Attribute::new_weight(Weight::Bold);
+        attr.set_start_index(0);
+        time_attr_list.insert(attr);
+        
+        time_label.set_attributes(Some(&time_attr_list));
+
+        let date_attr_list = pango::AttrList::new();
+        let mut attr = pango::Attribute::new_scale(2.);
+        attr.set_start_index(0);
+        date_attr_list.insert(attr);
+
+        date_label.set_attributes(Some(&date_attr_list));
 
         date_time_box.pack_start(&time_label, false, true, 0);
         date_time_box.pack_start(&date_label, false, true, 0);
@@ -46,7 +66,7 @@ fn build_ui(app: &Application) {
 
         win.add(&window_box);
         win.show_all();
-
+        
         let tick = move || {
             let time = get_current_time();
             time_label.set_text(&time);
