@@ -49,7 +49,7 @@ fn build_ui(app: &Application) {
         let mut attr = pango::Attribute::new_weight(Weight::Bold);
         attr.set_start_index(0);
         time_attr_list.insert(attr);
-        
+
         time_label.set_attributes(Some(&time_attr_list));
 
         let date_attr_list = pango::AttrList::new();
@@ -66,7 +66,7 @@ fn build_ui(app: &Application) {
 
         win.add(&window_box);
         win.show_all();
-        
+
         let tick = move || {
             let time = get_current_time();
             time_label.set_text(&time);
